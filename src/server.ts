@@ -1,29 +1,42 @@
+var WebSocketServer = require('websocket').server;
+var http = require('http');
+
 "use strict";
 
 process.title = "simple chat node";
 var webSocketsServerPort = 1337;
 
-// websocket and http servers
-var WebSocketServer = require('websocket').server;
-var http = require('http');
+/**
+ * Objects
+ */
+interface Message {
+    time: Number;
+    text: string;
+    author: string;
+    color: string;
+}
 
+interface Packet {
+    type: string;
+    data: string;
+}
 
 /**
  * Globals
  */
-var history = [ ];
-var clients = [ ];
+var message_history: Message[] = [ ];
+var clients: any[] = [ ];
 
 /**
- * Helpers
+ * Colours!!
  */
 var colors = [ 'red', 'green', 'blue', 'magenta', 'purple', 'plum', 'orange' ];
-colors.sort(function(a,b) { return Math.random() > 0.5; } );
+colors.sort(function(a,b) { return Math.floor(Math.random()*1000); } );
 
 /**
  * WebSocket server
  */
-var server = http.createServer(function (request, response) {
+var server = http.createServer(function (request: any, response: any) {
     // Don't need to do anything here. We are writting a socket server.
 });
 
@@ -35,11 +48,11 @@ let wsServer = new WebSocketServer({
     httpServer: server
 });
 
-wsServer.on('request', function (request) {
+wsServer.on('request', function (request: any) {
     var connection = request.accept(null, request.remoteAddress);
     var index = clients.push(connection) - 1;
-    var userName = false;
-    var userColor = false;
+    var userName = "";
+    var userColor = "";
     
     console.log((new Date()) + " New connection accepted.");
 
@@ -54,9 +67,9 @@ wsServer.on('request', function (request) {
     }
 
     // incomming message
-    connection.on('message', function (message) {
+    connection.on('message', function (message: any) {
         if (message.type === 'utf8') {
-            if (userName === false) {
+            if (userName == "") {
                 userName = message.utf8Data;
                 userColor = colors.shift();
                 connection.sendUTF(
@@ -74,8 +87,8 @@ wsServer.on('request', function (request) {
                     author: userName,
                     color: userColor
                 };
-                history.push(obj);
-                history = history.slice(-100);
+                message_history.push(obj);
+                message_history = message_history.slice(-100);
 
                 var json = JSON.stringify({ type: 'message', data: obj});
                 for (let i = 0; i < clients.length; i++) {
@@ -84,9 +97,9 @@ wsServer.on('request', function (request) {
             }
         }
     });
-    connection.on('close', function (connection) {
+    connection.on('close', function (connection: any) {
         // close the connection
-        if (userName !== false && userColor !== false) {
+        if (userName != "" && userColor != "") {
             console.log((new Date()) + " Peer " + connection.remoteAddress + " disconnected.");
             clients.splice(index, 1);
             colors.push(userColor);
