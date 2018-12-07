@@ -8,12 +8,18 @@ var $ = ($ as any);
 export class App extends React.Component<{}, {}> {
     constructor(props: any) {
         super(props);
+        console.log(props);
         this.state = {
             myColor: "",
             myName: "",
-            connection: new WebSocket('ws://127.0.0.1:1337')
+            connection: null
         };
+    }
+
+    connect(){
         var self = (this.state as any);
+        self.connection = new WebSocket('ws://127.0.0.1:1337');
+
         self.connection.onopen = function () {
             // choose a name
             // TODO
@@ -63,19 +69,18 @@ export class App extends React.Component<{}, {}> {
 
     render(){
         return  <Segment>
-                    <SettingsContainer></SettingsContainer>
-                     <MessengerContainer></MessengerContainer>
+                    <SettingsContainer connector={this.connect}></SettingsContainer>
+                    <MessengerContainer></MessengerContainer>
                 </Segment>;
                 
     }
 
     addMessage(author: string, message: string, color: string, dt: Date) {
-        $("#content").prepend('<p><span style="color:' + color + '">'
+        $("#display").prepend('<p><span style="color:' + color + '">'
             + author + '</span> @ ' + (dt.getHours() < 10 ? '0'
             + dt.getHours() : dt.getHours()) + ':'
             + (dt.getMinutes() < 10
               ? '0' + dt.getMinutes() : dt.getMinutes())
             + ': ' + message + '</p>');
     }
-} 
-
+}
