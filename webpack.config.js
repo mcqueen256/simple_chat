@@ -1,7 +1,7 @@
 var nodeExternals = require('webpack-node-externals');
 
 var ClientConfig = {
-    entry: "./src/index.ts",
+    entry: "./src/index.tsx",
     output: {
         filename: "client.bundle.js",
         path: __dirname + "/dist"
