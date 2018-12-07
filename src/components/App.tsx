@@ -13,7 +13,8 @@ export class App extends React.Component<{}, {}> {
             myName: "",
             connection: null,
             ip:"",
-            port: ""
+            port: "",
+            msg: ""
         };
     }
 
@@ -27,10 +28,7 @@ export class App extends React.Component<{}, {}> {
             // TODO
         };
         self.connection.onerror = function () {
-            $('#content').html($('<p>', {
-                text: 'Sorry, but there\'s some problem with your '
-                   + 'connection or the server is down.'
-              }));
+            alert('Sorry, but there\'s some problem with your connection or the server is down.');
         };
 
         self.connection.onmessage = function (message: any) {
@@ -42,9 +40,6 @@ export class App extends React.Component<{}, {}> {
             }
             if (json.type === 'color') {
                 self.myColor = json.data;
-                $('#status').text(self.myName + ': ').css('color', self.myColor);
-                $('#input').removeAttr('disabled').focus();
-                // from now user can start sending messages
             } else if (json.type === 'history') { // entire message history
                 // insert every single message to the chat window
                 for (var i=0; i < json.data.length; i++) {
@@ -53,7 +48,6 @@ export class App extends React.Component<{}, {}> {
                 }
             } else if (json.type === 'message') { // it's a single message
                 // let the user write another message
-                $('#input').removeAttr('disabled'); 
                 this.addMessage(json.data.author, json.data.text,
                             json.data.color, new Date(json.data.time));
             } else {
@@ -61,9 +55,7 @@ export class App extends React.Component<{}, {}> {
             }
             setInterval(function() {
                 if (self.connection.readyState !== 1) {
-                  $("#status").text('Error');
-                  $("#input").attr('disabled', 'disabled').val(
-                      'Unable to communicate with the WebSocket server.');
+                    alert('Unable to communicate with the WebSocket server.');
                 }
             }, 3000);
         };
@@ -75,17 +67,26 @@ export class App extends React.Component<{}, {}> {
                         connector={this.connect.bind(this)}
                         ipUpdator={(newIP: string) => (this.state as any).ip = newIP}
                         portUpdator={(newPort: string) => (this.state as any).port = newPort}></SettingsContainer>
-                    <MessengerContainer></MessengerContainer>
+                    <MessengerContainer sender={this.sendInput.bind(this)} msgUpdator={this.updateMsg.bind(this)}></MessengerContainer>
                 </Segment>;
                 
     }
 
     addMessage(author: string, message: string, color: string, dt: Date) {
+        console.log(this.props.children);
         $("#display").prepend('<p><span style="color:' + color + '">'
             + author + '</span> @ ' + (dt.getHours() < 10 ? '0'
             + dt.getHours() : dt.getHours()) + ':'
             + (dt.getMinutes() < 10
               ? '0' + dt.getMinutes() : dt.getMinutes())
             + ': ' + message + '</p>');
+    }
+
+    sendInput() {
+        (this.state as any).connection.send((this.state as any).msg);
+    }
+
+    updateMsg(msg: string) {
+        (this.state as any).msg = msg;
     }
 }
