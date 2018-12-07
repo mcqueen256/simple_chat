@@ -2,6 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import {App} from "./components/App";
+import {SettingsContainer} from "./components/SettingsContainer"
 
 (window as any).WebSocket = (window as any).WebSocket || (window as any).MozWebSocket;
 if (!(window as any).WebSocket) {
@@ -9,7 +10,6 @@ if (!(window as any).WebSocket) {
 }
 
 ReactDOM.render(
-    <App />,
+    <App/>,
     document.getElementById("content")
 );
-

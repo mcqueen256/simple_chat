@@ -1,5 +1,7 @@
 import * as React from "react";
 import {Segment} from "semantic-ui-react";
+import { SettingsContainer } from "./SettingsContainer";
+import { MessengerContainer } from "./MessengerContainer";
 
 var $ = ($ as any);
 
@@ -60,7 +62,11 @@ export class App extends React.Component<{}, {}> {
     }
 
     render(){
-        return <Segment>test</Segment>;
+        return  <Segment>
+                    <SettingsContainer></SettingsContainer>
+                     <MessengerContainer></MessengerContainer>
+                </Segment>;
+                
     }
 
     addMessage(author: string, message: string, color: string, dt: Date) {
@@ -72,4 +78,4 @@ export class App extends React.Component<{}, {}> {
             + ': ' + message + '</p>');
     }
 } 
-    
+
