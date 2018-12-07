@@ -8,17 +8,19 @@ var $ = ($ as any);
 export class App extends React.Component<{}, {}> {
     constructor(props: any) {
         super(props);
-        console.log(props);
         this.state = {
             myColor: "",
             myName: "",
-            connection: null
+            connection: null,
+            ip:"",
+            port: ""
         };
     }
 
     connect(){
         var self = (this.state as any);
-        self.connection = new WebSocket('ws://127.0.0.1:1337');
+        console.log('Connecting to ' + self.ip + ":" + self.port);
+        self.connection = new WebSocket('ws://' + self.ip + ":" + self.port);
 
         self.connection.onopen = function () {
             // choose a name
@@ -69,7 +71,10 @@ export class App extends React.Component<{}, {}> {
 
     render(){
         return  <Segment>
-                    <SettingsContainer connector={this.connect}></SettingsContainer>
+                    <SettingsContainer
+                        connector={this.connect.bind(this)}
+                        ipUpdator={(newIP: string) => (this.state as any).ip = newIP}
+                        portUpdator={(newPort: string) => (this.state as any).port = newPort}></SettingsContainer>
                     <MessengerContainer></MessengerContainer>
                 </Segment>;
                 
