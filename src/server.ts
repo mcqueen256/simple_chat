@@ -74,7 +74,7 @@ wsServer.on('request', function (request: any) {
     console.log((new Date()) + " New connection accepted.");
 
     // send back chat history
-    if (history.length > 0) {
+    if (message_history.length > 0) {
         connection.sendUTF(
             JSON.stringify({
                 type: 'history',
