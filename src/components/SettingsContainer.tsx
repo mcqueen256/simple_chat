@@ -1,12 +1,12 @@
 import * as React from "react";
-//import { Button } from "semantic-ui-react";
-import {Button} from "./Button";
+import { Button, Input } from "semantic-ui-react";
+
 export class SettingsContainer extends React.Component<{}, {}> {
     render(){
         return <div>
-                    <div>Ip textbox</div>
-                    <div>Port textbox</div> 
-                    <Button buttonText="Connect"></Button>
+                    <Input placeholder='Input Server IP Address'></Input>
+                    <Input placeholder='Input Port Number'></Input>
+                    <Button>Connect</Button>
                </div>
 
 }
