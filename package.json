@@ -4,7 +4,9 @@
   "description": "A simple chat room to test out skills",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node ./dist/server.bundle.js",
+    "build": "webpack --mode=development"
   },
   "repository": {
     "type": "git",

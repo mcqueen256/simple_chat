@@ -42,6 +42,23 @@ var server = http.createServer(function (request: any, response: any) {
 
 server.listen(webSocketsServerPort, function() {
     console.log((new Date())+ " Server is listening on port " + webSocketsServerPort);
+    console.log("    ,-.                    .'\\ _");
+    console.log("    ,'   \\                 .'   (_)");
+    console.log("   J     '-._ /\         .'     (,_)");
+    console.log("  /  _  /   ,'# )_       _\\_     (_)");
+    console.log(" /  '_Y'   /_.,'  \     (  _')     \\");
+    console.log(" | _ /   ,'\\/  .   |    '.  __)     \\");
+    console.log(" |'.Y   / # ) --'  /  _.-'  __)    .'");
+    console.log("_._\\,'  ,'__,'      /  _\\    / \\   .'");
+    console.log(",'-_ /           _.-' _\\  /   \\.'");
+    console.log("'    (_       _.-' _.-'  \\/");
+    console.log("      \  _.-' _.-' '-.     ./");
+    console.log("       -'  .-'        '-.-'/");
+    console.log("       |   \\o     _.-'####/");
+    console.log("       |    \\o_.-' \\#####/");
+    console.log("       |_.-#\\       \\###/");
+    console.log("       ######\\       \\/'");
+    console.log("       # #####`-.");
 });
 
 let wsServer = new WebSocketServer({
